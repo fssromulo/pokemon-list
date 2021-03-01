@@ -18,21 +18,3 @@ export async function post(url, data) {
     console.error("Não foi possível efetuar a requisição.", error);
   }
 }
-
-//   put = async (url, data) => {
-//     try {
-//       const apiData = await axios.put(url, data);
-//       return apiData;
-//     } catch (error) {
-//       console.error("Não foi possível efetuar a requisição.", error);
-//     }
-//   };
-
-//   delete = async (url) => {
-//     try {
-//       const apiData = await axios.delete(url);
-//       return apiData;
-//     } catch (error) {
-//       console.error("Não foi possível efetuar a requisição.", error);
-//     }
-//   };
