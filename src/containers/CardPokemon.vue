@@ -53,10 +53,12 @@
     </div>
 
     <div v-if="!isCarregandoDados && arrCardPokemon.length > 0">
-      <div>
-        <GridDesktopView :list-of-pokemon="arrCardPokemon" />
-        <CarouselVisaoMobile :list-of-pokemon="arrCardPokemon" />
-      </div>
+      <GridDesktopView
+        :list-of-pokemon="arrCardPokemon"
+        :show-detail="false"
+        :click-grid-view="testeFunctionParam"
+      />
+      <CarouselVisaoMobile :list-of-pokemon="arrCardPokemon" />
     </div>
   </div>
 </template>
@@ -89,6 +91,13 @@ export default {
     await this.carregarCards();
   },
   methods: {
+    testeFunctionParam(cardPokemon) {
+      this.$router.push({
+        name: `details`,
+        params: { id: cardPokemon.id },
+      });
+    },
+
     async carregarCards() {
       this.arrCardPokemon = [];
       this.isCarregandoDados = true;
@@ -105,12 +114,8 @@ export default {
         objQueryParams
       );
 
-      const arr = objResponse.data?.data ?? [];
-
-      this.arrCardPokemon = arr;
+      this.arrCardPokemon = objResponse.data?.data ?? [];
       this.isCarregandoDados = false;
-
-      //   console.log(this.arrCardPokemon);
     },
   },
 };

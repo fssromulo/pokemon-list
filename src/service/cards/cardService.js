@@ -1,5 +1,4 @@
 import { get } from "../service-default/service-default";
-
 class CardService {
   get = async (url, objQueryParams) => {
     try {

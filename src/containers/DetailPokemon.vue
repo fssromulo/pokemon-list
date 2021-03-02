@@ -1,107 +1,104 @@
 <template>
-  <div class="hello">
-    <h1>{{ objCardPokemon.name }}</h1>
-    <br />
-    <img :src="objCardPokemon.images.small" />
-    <br />
-    <span>Nome: {{ objCardPokemon.name }}</span>
-    <br />
-    <span>Id: {{ objCardPokemon.id }}</span>
-    <br />
-    <span>Tipos: {{ tipoDoPokemon(objCardPokemon.types) }}</span>
-    <br />
+  <div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li
+          style="cursor:pointer"
+          class="breadcrumb-item btn-link"
+          @click="$router.push('/')"
+        >
+          {{ objCardPokemon.name }}
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+      </ol>
+    </nav>
 
-    <span>
-      <span
-        v-show="
-          objCardPokemon.resistances && objCardPokemon.resistances.length > 0
-        "
-      >
-        Resistencia:
-        {{ listarAResistenciaPokemon(objCardPokemon.resistances) }}
-      </span>
-      <span
-        v-show="
-          !objCardPokemon.resistances || objCardPokemon.resistances.length == 0
-        "
-      >
-        <strong> Sem resistência para listar </strong>
-      </span>
-    </span>
-    <br />
-    <span>
-      <span
-        v-show="
-          objCardPokemon.weaknesses && objCardPokemon.weaknesses.length > 0
-        "
-      >
-        Fraquezas:
-        {{ listarAFraquezaPokemon(objCardPokemon.weaknesses) }}
-      </span>
-      <span
-        v-show="
-          !objCardPokemon.weaknesses || objCardPokemon.weaknesses.length == 0
-        "
-      >
-        <strong> Sem fraquezas para listar </strong>
-      </span>
-    </span>
-    <br />
-    <br />
-    <button v-on:click="mostrarAtaques">
-      Mostrar ataques
-    </button>
-    <br />
-    <hr />
-    <br />
-    <br />
-
-    <div v-show="showAtacks">
-      <div
-        v-show="objCardPokemon.attacks.length > 0"
-        v-for="(attack, index) in objCardPokemon.attacks"
-        :key="index"
-        :index="index"
-      >
-        <br />
-        <span>Nome: {{ attack.name }}</span>
-        <br />
-        <span>Descrição: {{ attack.text }}</span>
-        <br />
-        <span>Dano: {{ attack.damage }}</span>
-        <br />
-        <span> Custo de “mana”: {{ attack.convertedEnergyCost }} </span>
-
-        <br />
-        <hr />
-        <br />
+    <div v-if="isLoading">Carregando ...</div>
+    <div v-if="!isLoading">
+      <div class="container-fluid">
+        <div class="row">
+          <span data-bs-toggle="modal" data-bs-target="#pokemonModal">
+            <GridDesktopView
+              :list-of-pokemon="[objCardPokemon]"
+              :show-detail="true"
+            />
+          </span>
+        </div>
       </div>
-      <button v-on:click="esconderAtaques">
-        Esconder ataques
-      </button>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="pokemonModal"
+        tabindex="-1"
+        aria-labelledby="pokemonModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="pokemonModalLabel">
+                {{ objCardPokemon.name }} ataques
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <ul
+                class="list-group"
+                v-show="objCardPokemon.attacks.length > 0"
+                v-for="(attack, index) in objCardPokemon.attacks"
+                :key="index"
+                :index="index"
+              >
+                <li class="list-group-item active" aria-current="true">
+                  Nome: {{ attack.name }}
+                </li>
+                <li class="list-group-item">Descrição: {{ attack.text }}</li>
+                <li class="list-group-item">Dano: {{ attack.damage }}</li>
+                <li class="list-group-item">
+                  Custo de “mana”: {{ attack.convertedEnergyCost }}
+                </li>
+                <br />
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import CardService from "../service/cards/cardService";
-import {
-  tipoDoPokemon,
-  listarAResistenciaPokemon,
-  listarAFraquezaPokemon,
-} from "../utils/utils-functions";
+import GridView from "./desktop-view/GridView";
 
 export default {
   name: "DetailPokemon",
+
+  components: {
+    GridDesktopView: GridView,
+  },
   data() {
     return {
-      objCardService: null,
+      objCardService: {},
       objCardPokemon: [],
       idPokemon: null,
-      tipoDoPokemon: tipoDoPokemon,
-      listarAResistenciaPokemon: listarAResistenciaPokemon,
-      listarAFraquezaPokemon: listarAFraquezaPokemon,
       showAtacks: false,
+      isLoading: false,
     };
   },
 
@@ -116,16 +113,17 @@ export default {
     },
     mostrarAtaques() {
       this.showAtacks = true;
-      this.objCardPokemon.attacks;
     },
     async carregarCards() {
       this.objCardPokemon = [];
+      this.isLoading = true;
 
       const objResponse = await this.objCardService.get(
         "/cards/" + this.idPokemon
       );
       this.objCardPokemon = objResponse.data?.data ?? [];
 
+      this.isLoading = false;
       console.log(this.objCardPokemon);
     },
   },

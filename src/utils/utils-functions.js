@@ -4,6 +4,7 @@ export function tipoDoPokemon(tipos) {
     return strTipos.join(", ");
   } catch (error) {
     console.warn("Não possível converter os tipos do Pokemon", error);
+    return "";
   }
 }
 
@@ -18,6 +19,7 @@ export function listarAResistenciaPokemon(arrResistencia) {
     return listaDeResistencias.join(", ");
   } catch (error) {
     console.warn("Não possível converter as resistência do Pokemon", error);
+    return "";
   }
 }
 
@@ -32,5 +34,6 @@ export function listarAFraquezaPokemon(arrFraqueza) {
     return listaDeFraquezas.join(", ");
   } catch (error) {
     console.warn("Não possível converter as fraquezas do Pokemon", error);
+    return "";
   }
 }
