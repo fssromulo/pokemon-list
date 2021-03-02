@@ -7,6 +7,9 @@
           class="breadcrumb-item btn-link"
           @click="$router.push('/')"
         >
+          Voltar
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
           {{ objCardPokemon.name }}
         </li>
         <li class="breadcrumb-item active" aria-current="page">Detalhes</li>

@@ -14,6 +14,9 @@ export default {
   components: {
     CardPokemon,
   },
+  created() {
+    this.$store.dispatch("loadListFivePokemon");
+  },
 };
 </script>
 

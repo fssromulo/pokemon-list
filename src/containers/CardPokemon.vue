@@ -20,6 +20,9 @@
           value="Pesquisar"
         />
       </div>
+      <small v-show="getPokemonsBuscados.length > 0">
+        Últimos pokemons buscados: <strong>{{ getPokemonsBuscados }}</strong>
+      </small>
     </nav>
 
     <div class="row" style="margin-top: 100px;">
@@ -56,7 +59,7 @@
       <GridDesktopView
         :list-of-pokemon="arrCardPokemon"
         :show-detail="false"
-        :click-grid-view="testeFunctionParam"
+        :click-grid-view="goToDetailsPokemon"
       />
       <CarouselVisaoMobile :list-of-pokemon="arrCardPokemon" />
     </div>
@@ -83,15 +86,25 @@ export default {
       namePokemon: "",
       arrCardPokemon: [],
       isCarregandoDados: false,
+      teste: [],
     };
   },
 
   async mounted() {
     this.objCardService = new CardService();
-    await this.carregarCards();
+    this.teste = await this.carregarCards();
   },
+
+  computed: {
+    getPokemonsBuscados() {
+      const listLastFivePokemons =
+        this.$store.getters.getListLastFivePokemons ?? [];
+      return listLastFivePokemons.join(", ");
+    },
+  },
+
   methods: {
-    testeFunctionParam(cardPokemon) {
+    goToDetailsPokemon(cardPokemon) {
       this.$router.push({
         name: `details`,
         params: { id: cardPokemon.id },
@@ -108,6 +121,8 @@ export default {
       }
 
       const objQueryParams = new URLSearchParams(params).toString();
+
+      this.$store.dispatch("setNomePokemon", this.namePokemon ?? "");
 
       const objResponse = await this.objCardService.get(
         "/cards",

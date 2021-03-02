@@ -4,11 +4,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery";
 import "bootstrap/dist/js/bootstrap.min.js";
 import router from "./routes/routes";
-import './registerServiceWorker'
+import store from "./store/store";
+import "./registerServiceWorker";
 
 Vue.config.productionTip = false;
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount("#app");
