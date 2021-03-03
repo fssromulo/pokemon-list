@@ -1,24 +1,25 @@
-# pokemon-list
+# Pokelist - Romulo
 
-## Project setup
-```
-yarn install
-```
+Você está prestes a conhecer a melhor maneira de pesquisar seus card pokemon. Para acessar o projeto publicado, [clique aqui.](https://main.d23hpgabfm61rp.amplifyapp.com/)
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## Installation
 
-### Compiles and minifies for production
-```
-yarn build
+Use o gerenciador pacotes/depedências [yarn](https://yarnpkg.com/) ou [npm](https://www.npmjs.com/) para instalar.
+
+```bash
+yarn install // npm install
 ```
 
-### Lints and fixes files
-```
-yarn lint
+## Usage
+
+Após instalar as dependências use o comando a seguir para excutar o projeto:
+
+```bash
+yarn serve // npm run serve
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Compilar e/ou gerar versão de produção/distribuição
+
+```
+yarn build // npm run build
+```

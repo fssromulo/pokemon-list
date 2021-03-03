@@ -86,13 +86,11 @@ export default {
       namePokemon: "",
       arrCardPokemon: [],
       isCarregandoDados: false,
-      teste: [],
     };
   },
 
   async mounted() {
     this.objCardService = new CardService();
-    this.teste = await this.carregarCards();
   },
 
   computed: {
